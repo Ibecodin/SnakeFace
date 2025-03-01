@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Snake face</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164614767-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-164614767-1');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-core@1.7.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@1.7.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh@0.0.3"></script>
+    <script src="script.js" defer></script>
+</head>
+<body onload="init()">
+    <div class="content">
+        <h2>Play snake with your face!</h2>
+        <p>Look straight ahead, press "Begin game" and have a moment of patience before the game begins. <br>Best performance on desktop.</p>
+        <div id="warning"></div>
+        <canvas id="snake_board" width="200" height="200"></canvas>
+        <div id="status">Score: <span id="score"></span></div> 
+        <div>
+            Difficulty:
+            <input id="r1" type="radio" name="difficulty" value="easy" checked /> Easy
+            <input id="r2" type="radio" name="difficulty" value="medium" /> Medium
+            <input id="r3" type="radio" name="difficulty" value="hard" /> Hard
+        </div>
+        <button id="button" onclick="begin_game()">Begin game</button>
+        
+        <br>
+        <br>
+
+        <video id="video" width="320" height="240" autoplay playsinline></video>
+        <div id="direction"></div>
+    </div>
+</body>
+</html>
+
