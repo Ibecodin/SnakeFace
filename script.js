@@ -1,3 +1,44 @@
+var foodImage = new Image();
+foodImage.src = "food.png"; 
+
+document.addEventListener("DOMContentLoaded", function () {
+    const welcomeScreen = document.getElementById("welcome-screen");
+    const faceControlButton = document.getElementById("face-control");
+    const gameContainer = document.getElementById("game-container");
+    const canvas = document.getElementById("gameCanvas");
+    const scoreDisplay = document.getElementById("score");
+    const video = document.getElementById("video");
+
+    faceControlButton.addEventListener("click", function () {
+        welcomeScreen.style.display = "none";
+        gameContainer.style.display = "block";
+        canvas.style.display = "block";
+        scoreDisplay.style.display = "block";
+
+        initFaceTracking();
+    });
+
+    async function initFaceTracking() {
+        console.log("Face tracking initialized.");
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                video.srcObject = stream;
+                video.play();
+            }).catch(function () {
+                alert("Camera access is required for face tracking.");
+            });
+        }
+        model = await facemesh.load();
+        startFaceControlGame();
+    }
+
+    function startFaceControlGame() {
+        console.log("Face control game started!");
+        begin_game();  // Ensure this function starts the snake game
+    }
+});
+
+// --- Existing Game Logic ---
 function load_video() {
     var video = document.getElementById('video');
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -119,8 +160,8 @@ class Board {
         this.length = 1;
         this.direction = "D";
         this.positions = [[5,10]];
-        this.box_dim = 10;
-        this.grid_size = 20;
+        this.box_dim = 15;
+        this.grid_size = 40;
         this.context = this.canvas.getContext("2d");
         var random_pos_x = 4 +  Math.floor(Math.random() * 12);
         var random_pos_y = 4 +  Math.floor(Math.random() * 12);
@@ -136,19 +177,32 @@ class Board {
         obj.context.fillRect(0, obj.box_dim * obj.grid_size - 1, obj.box_dim * obj.grid_size, 1);
         obj.context.fillRect(obj.box_dim * obj.grid_size - 1, 0, 1, obj.box_dim * obj.grid_size);
 
-        obj.context.fillStyle = "#0000FF";
-        obj.context.fillRect(obj.food[0] * obj.box_dim, obj.food[1] * obj.box_dim, obj.box_dim, obj.box_dim);
+        // Draw the food image
+        let foodSize = obj.box_dim * 1.2; // Slightly bigger than a grid cell
+        let foodX = obj.food[0] * obj.box_dim + (obj.box_dim - foodSize) / 2;
+        let foodY = obj.food[1] * obj.box_dim + (obj.box_dim - foodSize) / 2;
 
-        obj.context.fillStyle = "#FF0000";
+        obj.context.drawImage(foodImage, foodX, foodY, foodSize, foodSize);
+
 
         var i;
         var x;
         var y;
-        for (i=0; i < obj.positions.length; i++){
+        for (i = 0; i < obj.positions.length; i++) {
             x = obj.positions[i][0];
             y = obj.positions[i][1];
-            obj.context.fillRect(x * obj.box_dim, y * obj.box_dim, obj.box_dim, obj.box_dim);
+             
+            // Use a gradient effect for a smooth look
+            let gradient = obj.context.createLinearGradient(x * obj.box_dim, y * obj.box_dim, (x + 1) * obj.box_dim, (y + 1) * obj.box_dim);
+            gradient.addColorStop(0, "#079e16");  // Dark green (top)
+            gradient.addColorStop(1, "#0abe1c");  // Light green (bottom)
+
+            obj.context.fillStyle = gradient;
+            obj.context.beginPath();
+            obj.context.roundRect(x * obj.box_dim, y * obj.box_dim, obj.box_dim, obj.box_dim, 5); // Rounded corners
+            obj.context.fill();
         }
+
         document.getElementById('score').innerHTML = obj.positions.length;
         if (obj.positions.length > 9) {
             document.getElementById('circle').style.visibility = "visible";
