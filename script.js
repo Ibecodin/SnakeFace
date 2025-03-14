@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     async function initFaceTracking() {
-        console.log("Face tracking initialized.");
+        //console.log("Face tracking initialized.");
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
                 video.srcObject = stream;
@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function startFaceControlGame() {
-        console.log("Face control game started!");
+        //console.log("Face control game started!");
         begin_game();  // Ensure this function starts the snake game
     }
 });
@@ -117,7 +117,7 @@ function get_predictions() {
       }
 
       cross = cross_normalised(left_diff, right_diff);
-      console.log(cross);
+      //console.log(cross);
 
       lr = cross[0];
       ud = cross[1];
@@ -162,6 +162,7 @@ class Board {
         this.positions = [[5,10]];
         this.box_dim = 15;
         this.grid_size = 40;
+        score = 0;
         this.context = this.canvas.getContext("2d");
         var random_pos_x = 4 +  Math.floor(Math.random() * 12);
         var random_pos_y = 4 +  Math.floor(Math.random() * 12);
@@ -230,7 +231,11 @@ class Board {
             y = obj.positions[i][1];
             if ((x == coords[0]) && (y == coords[1])){
                 return Boolean(1);
-            }
+            }           
+        }
+        if (Boolean){
+            score++;  //increases score where it checks if theres an intersection
+            //console.log(score);
         }
         return Boolean(0);
     }
@@ -298,6 +303,7 @@ function begin_game() {
     snake_game = new Board(c);
     document.getElementById('status').innerHTML = "Score:";
     document.getElementById('button').innerHTML = "Restart game";
+
     var speed;
     if (document.getElementById('r1').checked){
         speed = 400
