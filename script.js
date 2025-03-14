@@ -141,6 +141,7 @@ function get_predictions() {
           direction = "centre";
       }
       document.getElementById('direction').innerHTML = direction;
+      document.getElementById('score').innerHTML = score;
       }
     });
 }
@@ -204,8 +205,8 @@ class Board {
             obj.context.fill();
         }
 
-        document.getElementById('score').innerHTML = obj.positions.length;
-        if (obj.positions.length > 9) {
+        document.getElementById('score').innerHTML = score;
+        if (score > 1) {
             document.getElementById('circle').style.visibility = "visible";
         }
 
@@ -235,7 +236,7 @@ class Board {
         }
         if (Boolean){
             score++;  //increases score where it checks if theres an intersection
-            //console.log(score);
+            console.log(score);
         }
         return Boolean(0);
     }
@@ -303,6 +304,7 @@ function begin_game() {
     snake_game = new Board(c);
     document.getElementById('status').innerHTML = "Score:";
     document.getElementById('button').innerHTML = "Restart game";
+    document.getElementById('score').innerHTML = score;
 
     var speed;
     if (document.getElementById('r1').checked){
