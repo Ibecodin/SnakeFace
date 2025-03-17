@@ -1,5 +1,5 @@
 var foodImage = new Image();
-foodImage.src = "food.png"; 
+foodImage.src = "food.png";  
 
 document.addEventListener("DOMContentLoaded", function () {
     const welcomeScreen = document.getElementById("welcome-screen");
@@ -78,6 +78,7 @@ var init_lr;
 var init_ud;
 var direction = "centre";
 var pred_interval;
+let score=0;
 
 async function main() {
   const predictions = await model.estimateFaces(video);
@@ -241,22 +242,28 @@ class Board {
         return Boolean(0);
     }
 
-    end_if_intersects(obj, new_head){
-        var x;
-        var y;
-        var i;
-        for (i=0; i < obj.positions.length; i++){
-            x = obj.positions[i][0];
-            y = obj.positions[i][1];
-            if ((x == new_head[0]) && (y == new_head[1]) ||
-                (new_head[0] < 0 || new_head[1] < 0 || new_head[0] >
-                    obj.grid_size - 1 ||
-                    new_head[1] > obj.grid_size - 1) ){
+    end_if_intersects(obj, new_head) {
+        for (let i = 0; i < obj.positions.length; i++) {
+            const [x, y] = obj.positions[i];
+    
+            if ((x == new_head[0] && y == new_head[1]) ||
+                new_head[0] < 0 || new_head[1] < 0 ||
+                new_head[0] >= obj.grid_size || new_head[1] >= obj.grid_size) {
+                
                 window.clearInterval(interval);
-                document.getElementById('status').innerHTML = "Game over! Your score:";
+                stop_pred(); // Stop the face tracking loop too
+                console.log("Game Over!");
+    
+                // Show the game over popup and final score
+                document.getElementById('final-score').innerText = score;
+                document.getElementById('game-over-screen').style.display = "block";
+    
+                return true;  // Ensure the game fully stops
             }
         }
+        return false;  // Keep running if no collision
     }
+    
 
     update_step(obj){
         if (direction == 'down' && obj.direction != 'U'){
@@ -302,7 +309,7 @@ function begin_game() {
     }
     var c = document.getElementById("snake_board");
     snake_game = new Board(c);
-    document.getElementById('status').innerHTML = "Score:";
+    document.getElementById('score').innerHTML = "Score:";
     document.getElementById('button').innerHTML = "Restart game";
     document.getElementById('score').innerHTML = score;
 
@@ -321,4 +328,21 @@ function begin_game() {
     }
     interval = window.setInterval(
         () => snake_game.update_step(snake_game), speed);
+}
+
+function restartGame() {
+    console.log("Restarting Game!"); // Debug check
+    
+    // Hide the popup
+    document.getElementById('game-over-screen').style.display = "none";
+    
+    // Reset the score
+    score = 0;
+    document.getElementById('score').innerHTML = score;
+
+    // Restart face tracking and predictions
+    start_pred(); 
+
+    // Restart the game
+    begin_game();
 }

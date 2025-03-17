@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>SnakeFace</title>
     <link rel="stylesheet" type="text/css" href="style.css">  
-    <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-164614767-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -16,19 +15,24 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-converter@1.7.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/facemesh@0.0.3"></script>
     <script src="script.js" defer></script>
+    <script src="keyboard.js" defer></script>
+
 </head>
 <body>
     <div id="welcome-screen">
         <h1>Welcome to SnakeFace!</h1>
         <p>How to Play: Use either your face (webcam required) or arrow keys to control the snake. Eat the food, grow longer, and avoid hitting yourself!</p>
         <button id="face-control" onclick="init()">Play with Face Control</button>
-        <button id="arrow-control">Play with Arrow Keys</button>
+        <button id="arrow-control" onclick="startKeyboardGame()">Play with Arrow Keys</button>
     </div>
     
     <div class="content">
         <div id="warning"></div>
         <canvas id="snake_board" width="400" height="400"></canvas>
-        <div id="status">Score: <span id="score"></span></div> 
+        <div id="score">0</div> 
+        
+        <br>
+        
         <div>
             Difficulty:
             <input id="r1" type="radio" name="difficulty" value="easy" checked /> Easy
@@ -42,12 +46,18 @@
 
         <video id="video" width="320" height="240" autoplay playsinline style="display: none;"></video>
         <div id="direction"></div>
-        <div id="score"></div>
 
     </div>
     
     <video id="video" width="320" height="240" autoplay playsinline style="display: none;"></video>
     <div id="direction"></div>
+
+    <div id="game-over-screen" style="display: none;">
+        <h1>Game Over!</h1>
+        <p>Your Score: <span id="final-score">0</span></p>
+        <button onclick="restartGame()">Play Again</button>
+    </div>
+    
 </body>
 
 </html>

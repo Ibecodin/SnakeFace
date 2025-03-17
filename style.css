@@ -1,4 +1,3 @@
-/* Updated SnakeFace Styles */
 body {
     background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
     display: flex;
@@ -84,14 +83,18 @@ canvas {
 }
 
 #score {
+    display: block;
     position: absolute;
-    top: 20px;
+    top: calc(50% - 240px); 
+    left: calc(50% + 180px); 
+    transform: translate(-50%, -50%);
     font-size: 24px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-    display: none;
+    color: #000000; 
+    padding: 0;
+    border-radius: 0;
+    background: none; 
+    box-shadow: none; 
+    z-index: 10;
 }
 
 #game-over {
@@ -117,3 +120,50 @@ button {
     display: inline-block;
     font-size: 16px;
   }
+
+  #game-over-screen {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(59, 176, 180, 0.8);
+    z-index: 20;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+#game-over-screen h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+#game-over-screen p {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+#game-over-screen button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    background: #1361a0;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+#game-over-screen button:hover {
+    background: #073961;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translate(-50%, -40%); }
+    to { opacity: 1; transform: translate(-50%, -50%); }
+}
